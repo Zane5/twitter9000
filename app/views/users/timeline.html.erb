@@ -1,0 +1,6 @@
+<%= render 'shared/header', header: "Timeline" %>
+<ul>
+<% @statuses.each do |status| %>
+  <li><%= status.body
+<% end %>
+</ul>
