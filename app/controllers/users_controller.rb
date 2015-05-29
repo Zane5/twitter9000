@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:follow, :unfollow, :timeline]
+  before_action :require_user, only: [:follow, :unfollow, :timeline, :mentions]
 
   def index
     @users = User.all
@@ -53,6 +53,10 @@ class UsersController < ApplicationController
       @statuses << user.statuses
     end
     @statuses.flatten
+  end
+
+  def mentions
+    #current_user.mentions.each do || 
   end
   
   private
