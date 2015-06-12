@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :statuses
   has_many :mentions
+  has_many :unread_mentions, -> (obj) { where('viewed_at is NULL') }, class_name: 'Mention', foreign_key: 'user_id'
 
   has_many :follower_relationships, class_name: "Relationship", foreign_key: "leader_id"
   has_many :leader_relationships, class_name: "Relationship", foreign_key: "follower_id"
@@ -12,4 +13,18 @@ class User < ActiveRecord::Base
   
   validates :username, presence: true
   validates :email, presence: true
+
+  def num_unread_mentions
+    mentions.where(viewed_at: nil).count
+  end
+
+  def unread_mentions
+    mentions.where(viewed_at: nil)
+  end
+
+  def mark_unread_mentions!
+    unread_mentions.each do |mention|
+      mention.mark_viewed!
+    end
+  end
 end
